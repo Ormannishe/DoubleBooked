@@ -58,7 +58,7 @@
 
 (deftest find-conflicts-test
   ;; I thought about ensuring the function always returns a list as described in its docstring
-  ;; but in general I prefer when functions return nil when given invalid input and no exception handling is required
+  ;; But in general I prefer when functions return nil when given invalid input and no exception handling is required
   (testing "returns nil when given nil or an empty list"
     (is (nil? (core/find-conflicts nil)))
     (is (nil? (core/find-conflicts '()))))

@@ -19,9 +19,6 @@
     (when (and interval1 interval2)
       (t/overlaps? interval1 interval2))))
 
-;; TODO: Might as well implement the more efficient solution as well ?
-;;
-;; First pass, kind of dumb solution
 ;; Simply compares every event and returns the list of overlapping events
 ;; Nice and simple, but could be done more efficiently
 (defn find-conflicts
