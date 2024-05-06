@@ -5,7 +5,7 @@ When maintaining a calendar of events, it is important to know if an event overl
 ## Installation
 
 - Install [Leiningen](https://leiningen.org/)
-- Run `lein repl` to test things out in the REPl with your own custom inputs
+- Run `lein repl` to test things out in the REPL with your own custom inputs
 - Run `lein test` to verify with tests I've already written
 
 ## Assumptions
@@ -25,7 +25,7 @@ While implementing this coding test, I had to make a number of assumptions about
 
 ## Further Reading
 
-I've implemented three different versions of the algorithm, each progressively improved. I thought it would be worthwhile to keep all 3 versions so you can easily see how my thought process evolved during the challenge. :)
+I've implemented three different versions of the algorithm, each progressively improved. I thought it would be worthwhile to keep all three versions so you can easily see how my thought process evolved during the challenge.
 
 First I implemented a quick and easy solution by simply comparing all events to each other recursively. This is a nice low-complexity solution, but does not scale particularly well.
 
@@ -36,4 +36,4 @@ Lastly, I implemented a more efficient solution which first sorts the list by `:
 
 I did some cursory research to see how others would have implemented this even more efficiently and found this elegant solution online (also written in Clojure!): https://github.com/dhop/double-booked/tree/master
 
-If required to implement a more efficient solution, I would likely go with something similar.
+In a real-world scenario, I probably would have just used this pre-existing solution.
