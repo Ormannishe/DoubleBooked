@@ -56,6 +56,13 @@
   [pairs]
   (map (partial map :id) pairs))
 
+(defn setify
+  "Given a list of paired overlapping events (or IDs), transform everything into sets for comparison without order"
+  [pairs]
+  (->> pairs
+       (map set)
+       set))
+
 (deftest find-conflicts-test
   ;; I thought about ensuring the function always returns a list as described in its docstring
   ;; But in general I prefer when functions return nil when given invalid input and no exception handling is required
@@ -68,6 +75,30 @@
     (is (empty? (core/find-conflicts back-to-back-events))))
   ;; For ease of comparison I've added IDs to the events so we can just compare the set of conflicting IDs instead of the whole event
   (testing "All pairs of overlapping events are returned"
-    (let [conflicting-IDs `((1 2) (1 3) (1 4) (2 3) (2 5) (3 4) (3 5))]
-      (is (= (pairs->IDs (core/find-conflicts overlapping-events))
+    (let [conflicting-IDs #{#{1 2} #{1 3} #{1 4} #{2 3} #{2 5} #{3 4} #{3 5}}]
+      (is (= (setify (pairs->IDs (core/find-conflicts overlapping-events)))
              conflicting-IDs)))))
+
+(deftest find-conflicts-improved-test
+  (testing "returns nil when given nil or an empty list"
+    (is (nil? (core/find-conflicts-improved nil)))
+    (is (nil? (core/find-conflicts-improved '()))))
+  (testing "events that are missing a start or end date are not considered"
+    (is (empty? (core/find-conflicts-improved events-with-missing-data))))
+  (testing "events which end and start at the exact same time don't actually overlap"
+    (is (empty? (core/find-conflicts-improved back-to-back-events))))
+  (testing "find-conflicts and find-conflicts-improved both produce the same result"
+    (is (= (setify (core/find-conflicts overlapping-events))
+           (setify (core/find-conflicts-improved overlapping-events))))))
+
+(deftest find-conflicts-efficiently-test
+  (testing "returns nil when given nil or an empty list"
+    (is (nil? (core/find-conflicts-efficiently nil)))
+    (is (nil? (core/find-conflicts-efficiently '()))))
+  (testing "events that are missing a start or end date are not considered"
+    (is (empty? (core/find-conflicts-efficiently events-with-missing-data))))
+  (testing "events which end and start at the exact same time don't actually overlap"
+    (is (empty? (core/find-conflicts-efficiently back-to-back-events))))
+  (testing "find-conflicts and find-conflicts-efficiently both produce the same result"
+    (is (= (setify (core/find-conflicts overlapping-events))
+           (setify (core/find-conflicts-efficiently overlapping-events))))))
